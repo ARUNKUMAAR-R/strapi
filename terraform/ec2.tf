@@ -28,7 +28,7 @@ resource "aws_security_group" "strapi-sg" {
 }
 
 resource "aws_instance" "strapi-ec2" {
-  ami                         = "ami-06784e9934d6ab0f5"
+  ami                         = "ami-0e001c9271cf7f3b9"
   instance_type               = "t2.medium"
   vpc_security_group_ids      = [aws_security_group.strapi-sg.id]
   subnet_id = aws_subnet.public_subnet1.id
@@ -36,7 +36,6 @@ resource "aws_instance" "strapi-ec2" {
   associate_public_ip_address = true
   user_data                   = <<-EOF
     #!/bin/bash
-
     sudo apt update
     curl -fsSL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh
     sudo bash -E nodesource_setup.sh
