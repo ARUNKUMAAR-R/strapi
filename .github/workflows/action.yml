@@ -1,0 +1,63 @@
+name: Terraform
+on:
+  push:
+    branches:
+      - arun
+jobs:
+  terraform:
+    name: "Terraform"
+    runs-on: ubuntu-latest
+    env: 
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    defaults:
+      run:
+        working-directory: terraform
+    
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.0.11 # Specify your Terraform version here
+          terraform_wrapper: false
+           
+      
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+      - name: Get instance public IP
+        id: get_ip
+        run: |
+          echo "::set-output name=public_ip::$(terraform output -raw public_ip)"
+
+      - name: Run SSH commands
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ steps.get_ip.outputs.public_ip }}
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            #!/bin/bash
+            sudo apt update
+            curl -fsSL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh
+            sudo bash -E nodesource_setup.sh
+            sudo apt update && sudo apt install nodejs -y
+            sudo npm install -g yarn && sudo npm install -g pm2
+            echo -e "skip\n" | npx create-strapi-app simple-strapi --quickstart
+            cd simple-strapi
+            echo "const strapi = require('@strapi/strapi');
+            strapi().start();" > server.js
+            pm2 start server.js
+          
+            
