@@ -31,7 +31,9 @@ resource "aws_instance" "strapi-ec2" {
   ami                         = var.ami
   instance_type               = "t2.medium"
   vpc_security_group_ids      = [aws_security_group.strapi-sg.id]
+
   subnet_id                   = aws_subnet.public_subnet1.id
+
   key_name                    = "PEM-NV"
   associate_public_ip_address = true
   user_data                   = <<-EOF
@@ -45,7 +47,7 @@ resource "aws_instance" "strapi-ec2" {
                                 cd simple-strapi
                                 echo "const strapi = require('@strapi/strapi');
                                 strapi().start();" > server.js
-                                pm2 start server.js --name my-strapi-server
+                                pm2 start server.js --name strapi-server
                                 pm2 save && pm2 startup                               
                                 sleep 360
                                 EOF
