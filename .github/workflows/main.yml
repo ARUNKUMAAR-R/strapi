@@ -3,6 +3,9 @@ on:
   push:
     branches:
     - arun
+  pull_request:
+    branches:
+    - arun
 jobs:
   terraform:
     name: "Terraform"
