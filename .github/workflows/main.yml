@@ -1,9 +1,6 @@
 name: Terraform
 on:
-  pull_request:
-    branches:
-    - main
-    - arun
+   workflow_dispatch:
 jobs:
   terraform:
     name: "Terraform"
