@@ -1,3 +1,6 @@
 # strapi
 
-Just Raise the PR with loom video and Readme updated file.
+## Create a VPC and Ubuntu Ec2 Instance using Terrafom
+
+## Run User Data while provisioning the EC2 Instance
+
