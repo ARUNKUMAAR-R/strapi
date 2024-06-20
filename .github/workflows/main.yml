@@ -1,6 +1,8 @@
-name: Terraform
+name: Terraform_automated
 on:
-   workflow_dispatch:
+  push:
+    branches:
+    - arun
 jobs:
   terraform:
     name: "Terraform"
