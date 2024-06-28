@@ -27,6 +27,22 @@ resource "aws_security_group" "strapi-sg" {
 
 }
 
+data "aws_ami" "ubuntu" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"] 
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["111151604484"] 
+}
+
 resource "aws_instance" "strapi-ec2" {
   ami                         = var.ami
   instance_type               = "t2.medium"
