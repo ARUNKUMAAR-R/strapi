@@ -59,8 +59,8 @@ resource "aws_instance" "strapi-ec2" {
                                 sudo bash -E nodesource_setup.sh
                                 sudo apt update && sudo apt install nodejs -y
                                 sudo npm install -g yarn && sudo npm install -g pm2
-                                git clone https://github.com/ARUNKUMAAR-R/strapi-app.git
-                                cd strapi-app
+                                git clone -b arun https://github.com/ARUNKUMAAR-R/strapi.git
+                                cd strapi
                                 yarn start
                                 pm2 start config/server.js --name strapi-server
                                 pm2 save && pm2 startup                               
