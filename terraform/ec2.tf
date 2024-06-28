@@ -44,7 +44,7 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "strapi-ec2" {
-  ami                         = var.ami
+  ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t2.medium"
   vpc_security_group_ids      = [aws_security_group.strapi-sg.id]
 
